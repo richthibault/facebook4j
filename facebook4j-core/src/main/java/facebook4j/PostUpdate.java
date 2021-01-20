@@ -47,6 +47,8 @@ public class PostUpdate implements java.io.Serializable {
 
     private Boolean published;
     private Integer scheduledPublishTime;
+    
+    private List<String> mediaIds;
 
     public PostUpdate(String message) {
         this.message = message;
@@ -248,7 +250,15 @@ public class PostUpdate implements java.io.Serializable {
         return scheduledPublishTime(Long.valueOf(time).intValue());
     }
 
-    /*package*/ HttpParameter[] asHttpParameterArray() {
+    public List<String> getMediaIds() {
+		return mediaIds;
+	}
+
+	public void setMediaIds(List<String> mediaIds) {
+		this.mediaIds = mediaIds;
+	}
+
+	/*package*/ HttpParameter[] asHttpParameterArray() {
         List<HttpParameter> params = new ArrayList<HttpParameter>();
         if (message != null) {
             params.add(new HttpParameter("message", message));
@@ -297,6 +307,12 @@ public class PostUpdate implements java.io.Serializable {
         if (scheduledPublishTime != null) {
             params.add(new HttpParameter("scheduled_publish_time", scheduledPublishTime));
         }
+		if(mediaIds != null) {
+			int i=0;
+			for(String mediaId : mediaIds) {
+				params.add(new HttpParameter("attached_media["+(i++)+"]", "{\"media_fbid\":\""+mediaId+"\"}"));
+			}
+		}
         return params.toArray(new HttpParameter[params.size()]);
     }
 
