@@ -203,7 +203,7 @@
             </manifest>
           </archive>
         </configuration>
-        <version>2.6</version>
+        <version>3.2.0</version>
       </plugin>
 
       <plugin>
@@ -218,29 +218,29 @@
         </executions>
         <version>3.0.0</version>
       </plugin>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>javadoc-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <excludePackageNames>
-                facebook4j.internal.*
-              </excludePackageNames>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <charset>UTF-8</charset>
-          <show>public</show>
-          <locale>en_US</locale>
-        </configuration>
-        <version>2.10.4</version>
-      </plugin>
+<!--       <plugin> -->
+<!--         <artifactId>maven-javadoc-plugin</artifactId> -->
+<!--         <executions> -->
+<!--           <execution> -->
+<!--             <id>javadoc-jar</id> -->
+<!--             <phase>package</phase> -->
+<!--             <goals> -->
+<!--               <goal>jar</goal> -->
+<!--             </goals> -->
+<!--             <configuration> -->
+<!--               <excludePackageNames> -->
+<!--                 facebook4j.internal.* -->
+<!--               </excludePackageNames> -->
+<!--             </configuration> -->
+<!--           </execution> -->
+<!--         </executions> -->
+<!--         <configuration> -->
+<!--           <charset>UTF-8</charset> -->
+<!--           <show>public</show> -->
+<!--           <locale>en_US</locale> -->
+<!--         </configuration> -->
+<!--         <version>2.10.4</version> -->
+<!--       </plugin> -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>

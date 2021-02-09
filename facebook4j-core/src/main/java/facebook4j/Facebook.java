@@ -32,6 +32,7 @@ import facebook4j.api.FriendMethods;
 import facebook4j.api.GameMethods;
 import facebook4j.api.GroupMethods;
 import facebook4j.api.InsightMethods;
+import facebook4j.api.InstagramMethods;
 import facebook4j.api.LikeMethods;
 import facebook4j.api.LinkMethods;
 import facebook4j.api.LocationMethods;
@@ -71,6 +72,7 @@ public interface Facebook extends java.io.Serializable,
     FriendMethods,
     GameMethods,
     GroupMethods,
+    InstagramMethods,
     LikeMethods,
     LinkMethods,
     LocationMethods,
@@ -262,4 +264,10 @@ public interface Facebook extends java.io.Serializable,
      * @since Facebook4J 2.1.0
      */
     RawAPIMethods rawAPI();
+
+    /**
+     * @since Facebook4J 2.4.13-EXQLOOP-1
+     */
+    InstagramMethods instagram();
+
 }

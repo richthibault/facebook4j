@@ -16,6 +16,20 @@
 
 package facebook4j;
 
+import static facebook4j.internal.util.z_F4JInternalParseUtil.getBoolean;
+import static facebook4j.internal.util.z_F4JInternalParseUtil.getRawString;
+
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import facebook4j.Question.Option;
 import facebook4j.api.AccountMethods;
 import facebook4j.api.ActivityMethods;
@@ -33,6 +47,7 @@ import facebook4j.api.FriendMethods;
 import facebook4j.api.GameMethods;
 import facebook4j.api.GroupMethods;
 import facebook4j.api.InsightMethods;
+import facebook4j.api.InstagramMethods;
 import facebook4j.api.LikeMethods;
 import facebook4j.api.LinkMethods;
 import facebook4j.api.LocationMethods;
@@ -59,19 +74,6 @@ import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
 import facebook4j.internal.util.z_F4JInternalStringUtil;
-
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import static facebook4j.internal.util.z_F4JInternalParseUtil.*;
 
 /**
  * A java representation of the <a href="https://developers.facebook.com/docs/reference/api/">Facebook Graph API</a><br>
@@ -2456,6 +2458,27 @@ class FacebookImpl extends FacebookBaseImpl implements Facebook {
         ensureAuthorizationEnabled();
         return _getReactions(videoId, reading);
     }
+    
+    /* Instagram Methods */
+    public String postInstagramMedia(String igAccountId, InstagramMedia instagramMedia) throws FacebookException {
+        ensureAuthorizationEnabled();
+        // two-step process....create "media" object container, then do a "media_publish"
+        JSONObject json = post(buildEndpoint(igAccountId, "media"), instagramMedia.asHttpParameterArray()).asJSONObject();
+        String mediaId = null;
+        try {
+        	mediaId = json.getString("id");
+        } catch (JSONException jsone) {
+            throw new FacebookException(jsone.getMessage(), jsone);
+        }
+        if(mediaId!=null) {
+        	 List<HttpParameter> params = new ArrayList<HttpParameter>();
+             params.add(new HttpParameter("creation_id", mediaId));
+             HttpParameter[] httpParams = params.toArray(new HttpParameter[params.size()]);
+        	json = post(buildEndpoint(igAccountId, "media_publish"), httpParams).asJSONObject();
+        }
+        return mediaId;
+    }
+
 
     /* FQL Methods */
 
@@ -3137,6 +3160,10 @@ class FacebookImpl extends FacebookBaseImpl implements Facebook {
 
     public RawAPIMethods rawAPI() {
         return this;
+    }
+    
+    public InstagramMethods instagram() {
+    	return this;
     }
 
 }
