@@ -61,5 +61,7 @@ public interface Page {
 
     PagableList<Like> getLikes();
     PagableList<PageBackedInstagramAccount> getPageBackedInstagramAccounts();
+    
+    String getInstagramBusinessAccountId();
 
 }

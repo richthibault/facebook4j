@@ -49,6 +49,7 @@ import facebook4j.Note;
 import facebook4j.Notification;
 import facebook4j.Offer;
 import facebook4j.Page;
+import facebook4j.PageBackedInstagramAccount;
 import facebook4j.PageSetting;
 import facebook4j.Photo;
 import facebook4j.Place;
@@ -114,6 +115,7 @@ public final class DataObjectFactory {
     private static final Constructor<Notification> notificationConstructor;
     private static final Constructor<Offer> offerConstructor;
     private static final Constructor<Page> pageConstructor;
+    private static final Constructor<PageBackedInstagramAccount> pageBackedInstagramAccountConstructor;
     private static final Constructor<PageSetting> pageSettingConstructor;
     private static final Constructor<Photo> photoConstructor;
     private static final Constructor<Place> placeConstructor;
@@ -229,6 +231,9 @@ public final class DataObjectFactory {
 
             pageConstructor = (Constructor<Page>) Class.forName("facebook4j.internal.json.PageJSONImpl").getDeclaredConstructor(JSONObject.class);
             pageConstructor.setAccessible(true);
+            
+            pageBackedInstagramAccountConstructor = (Constructor<PageBackedInstagramAccount>) Class.forName("facebook4j.internal.json.PageBackedInstagramAccountJSONImpl").getDeclaredConstructor(JSONObject.class);
+            pageBackedInstagramAccountConstructor.setAccessible(true);
 
             pageSettingConstructor = (Constructor<PageSetting>) Class.forName("facebook4j.internal.json.PageSettingJSONImpl").getDeclaredConstructor(JSONObject.class);
             pageSettingConstructor.setAccessible(true);
@@ -1007,6 +1012,28 @@ public final class DataObjectFactory {
         try {
             JSONObject json = new JSONObject(rawJSON);
             return pageConstructor.newInstance(json);
+        } catch (InstantiationException e) {
+            throw new FacebookException(e);
+        } catch (IllegalAccessException e) {
+            throw new AssertionError(e);
+        } catch (InvocationTargetException e) {
+            throw new FacebookException(e);
+        } catch (JSONException e) {
+            throw new FacebookException(e);
+        }
+    }
+    
+    /**
+     * Constructs a PageBackedInstagramAccount object from rawJSON string.
+     *
+     * @param rawJSON raw JSON form as String
+     * @return Page
+     * @throws FacebookException when provided string is not a valid JSON string.
+     */
+    public static PageBackedInstagramAccount createPageBackedInstagramAccount(String rawJSON) throws FacebookException {
+        try {
+            JSONObject json = new JSONObject(rawJSON);
+            return pageBackedInstagramAccountConstructor.newInstance(json);
         } catch (InstantiationException e) {
             throw new FacebookException(e);
         } catch (IllegalAccessException e) {

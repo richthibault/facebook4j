@@ -2460,23 +2460,33 @@ class FacebookImpl extends FacebookBaseImpl implements Facebook {
     }
     
     /* Instagram Methods */
-    public String postInstagramMedia(String igAccountId, InstagramMedia instagramMedia) throws FacebookException {
-        ensureAuthorizationEnabled();
-        // two-step process....create "media" object container, then do a "media_publish"
-        JSONObject json = post(buildEndpoint(igAccountId, "media"), instagramMedia.asHttpParameterArray()).asJSONObject();
-        String mediaId = null;
-        try {
-        	mediaId = json.getString("id");
-        } catch (JSONException jsone) {
-            throw new FacebookException(jsone.getMessage(), jsone);
-        }
-        if(mediaId!=null) {
-        	 List<HttpParameter> params = new ArrayList<HttpParameter>();
-             params.add(new HttpParameter("creation_id", mediaId));
-             HttpParameter[] httpParams = params.toArray(new HttpParameter[params.size()]);
-        	json = post(buildEndpoint(igAccountId, "media_publish"), httpParams).asJSONObject();
-        }
-        return mediaId;
+    
+    public PageBackedInstagramAccount getInstagramBusinessAccount(String pageId) throws FacebookException {
+    	Reading pageReading = new Reading().fields("instagram_business_account");
+    	Page page = getPage(pageId, pageReading);
+    	if(page.getInstagramBusinessAccountId()==null)
+    		return null;
+    	Reading igReading = new Reading().fields("id","profile_picture_url","follows_count","followers_count","media_count","username");
+    	return factory.createPageBackedInstagramAccount(get(buildEndpoint(page.getInstagramBusinessAccountId(), igReading)));
+    }
+
+    public String postInstagramMedia(String instagramAccountId, InstagramMedia instagramMedia) throws FacebookException {
+    	ensureAuthorizationEnabled();
+    	// two-step process....create "media" object container, then do a "media_publish"
+    	JSONObject json = post(buildEndpoint(instagramAccountId, "media"), instagramMedia.asHttpParameterArray()).asJSONObject();
+    	String mediaId = null;
+    	try {
+    		mediaId = json.getString("id");
+    	} catch (JSONException jsone) {
+    		throw new FacebookException(jsone.getMessage(), jsone);
+    	}
+    	if(mediaId!=null) {
+    		List<HttpParameter> params = new ArrayList<HttpParameter>();
+    		params.add(new HttpParameter("creation_id", mediaId));
+    		HttpParameter[] httpParams = params.toArray(new HttpParameter[params.size()]);
+    		json = post(buildEndpoint(instagramAccountId, "media_publish"), httpParams).asJSONObject();
+    	}
+    	return mediaId;
     }
 
 

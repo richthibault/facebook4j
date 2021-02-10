@@ -52,6 +52,7 @@ import facebook4j.Note;
 import facebook4j.Notification;
 import facebook4j.Offer;
 import facebook4j.Page;
+import facebook4j.PageBackedInstagramAccount;
 import facebook4j.PageSetting;
 import facebook4j.Permission;
 import facebook4j.Photo;
@@ -163,6 +164,8 @@ public interface z_F4JInternalFactory extends java.io.Serializable {
 
     Page createPage(HttpResponse res) throws FacebookException;
     ResponseList<Page> createPageList(HttpResponse res) throws FacebookException;
+    
+    PageBackedInstagramAccount createPageBackedInstagramAccount(HttpResponse res) throws FacebookException;
 
     ResponseList<PageSetting> createPageSettingList(HttpResponse res) throws FacebookException;
 

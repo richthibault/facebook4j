@@ -64,6 +64,8 @@ import static facebook4j.internal.util.z_F4JInternalParseUtil.*;
     private PagableList<Like> likes;
 
     private PagableList<PageBackedInstagramAccount> pageBackedInstagramAccounts;
+    
+    private String instagramBusinessAccountId;
 
     /*package*/PageJSONImpl(HttpResponse res, Configuration conf) throws FacebookException {
         super(res);
@@ -91,6 +93,8 @@ import static facebook4j.internal.util.z_F4JInternalParseUtil.*;
             canPost = getBoolean("can_post", json);
 
             populatePageBackedInstagramAccounts(json);
+            
+            populateInstagramBusinessAccountId(json);
 
             populateLikes(json);
 
@@ -143,6 +147,16 @@ import static facebook4j.internal.util.z_F4JInternalParseUtil.*;
             }
         } else {
             pageBackedInstagramAccounts = new PagableListImpl<PageBackedInstagramAccount>(0);
+        }
+    }
+    
+    private void populateInstagramBusinessAccountId(JSONObject json) throws JSONException, FacebookException {
+        if (!json.isNull("instagram_business_account")) {
+            JSONObject instagramAccountJSONObject = json.getJSONObject("instagram_business_account");
+
+            if (!instagramAccountJSONObject.isNull("id")) {
+            	instagramBusinessAccountId = getRawString("id", instagramAccountJSONObject);
+            }
         }
     }
 
@@ -201,6 +215,10 @@ import static facebook4j.internal.util.z_F4JInternalParseUtil.*;
     public PagableList<PageBackedInstagramAccount> getPageBackedInstagramAccounts() {
         return pageBackedInstagramAccounts;
     }
+    
+	public String getInstagramBusinessAccountId() {
+		return instagramBusinessAccountId;
+	}
 
     public Place.Location getLocation() {
         return location;
@@ -340,4 +358,5 @@ import static facebook4j.internal.util.z_F4JInternalParseUtil.*;
                 ", pageBackedInstagramAccounts=" + pageBackedInstagramAccounts +
                 '}';
     }
+
 }

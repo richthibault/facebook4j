@@ -34,9 +34,9 @@ final class PageBackedInstagramAccountJSONImpl extends FacebookResponseImpl impl
 
     private void init(JSONObject json) {
         id = getRawString("id", json);
-        profilePic = getRawString("profile_pic", json);
-        followCount = getInt("follow_count", json);
-        followedByCount = getInt("followed_by_count", json);
+        profilePic = getRawString("profile_picture_url", json);
+        followCount = getInt("follows_count", json);
+        followedByCount = getInt("followers_count", json);
         mediaCount = getInt("media_count", json);
         username = getRawString("username", json);
     }

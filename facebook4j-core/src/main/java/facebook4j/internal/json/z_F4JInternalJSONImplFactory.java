@@ -52,6 +52,7 @@ import facebook4j.Note;
 import facebook4j.Notification;
 import facebook4j.Offer;
 import facebook4j.Page;
+import facebook4j.PageBackedInstagramAccount;
 import facebook4j.PageSetting;
 import facebook4j.Permission;
 import facebook4j.Photo;
@@ -293,6 +294,10 @@ public class z_F4JInternalJSONImplFactory implements z_F4JInternalFactory {
 
     public ResponseList<Page> createPageList(HttpResponse res) throws FacebookException {
         return PageJSONImpl.createPageList(res, conf);
+    }
+    
+    public PageBackedInstagramAccount createPageBackedInstagramAccount(HttpResponse res) throws FacebookException {
+    	return new PageBackedInstagramAccountJSONImpl(res.asJSONObject());
     }
 
     public ResponseList<PageSetting> createPageSettingList(HttpResponse res) throws FacebookException {
