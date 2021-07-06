@@ -2475,16 +2475,22 @@ class FacebookImpl extends FacebookBaseImpl implements Facebook {
     	// two-step process....create "media" object container, then do a "media_publish"
     	JSONObject json = post(buildEndpoint(instagramAccountId, "media"), instagramMedia.asHttpParameterArray()).asJSONObject();
     	String mediaId = null;
+    	String creationId = null;
     	try {
-    		mediaId = json.getString("id");
+    		creationId = json.getString("id");
     	} catch (JSONException jsone) {
     		throw new FacebookException(jsone.getMessage(), jsone);
     	}
-    	if(mediaId!=null) {
+    	if(creationId!=null) {
     		List<HttpParameter> params = new ArrayList<HttpParameter>();
-    		params.add(new HttpParameter("creation_id", mediaId));
+    		params.add(new HttpParameter("creation_id", creationId));
     		HttpParameter[] httpParams = params.toArray(new HttpParameter[params.size()]);
     		json = post(buildEndpoint(instagramAccountId, "media_publish"), httpParams).asJSONObject();
+        	try {
+        		mediaId = json.getString("id");
+        	} catch (JSONException jsone) {
+        		throw new FacebookException(jsone.getMessage(), jsone);
+        	}
     	}
     	return mediaId;
     }
